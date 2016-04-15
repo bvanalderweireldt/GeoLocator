@@ -3,6 +3,8 @@ package com.hybhub.geo.db;
 import org.junit.Assert;
 import org.junit.Test;
 
+import jdk.nashorn.internal.ir.debug.ObjectSizeCalculator;
+
 public class TestIpDb {
 
 	@Test
@@ -17,5 +19,6 @@ public class TestIpDb {
 		Assert.assertEquals(ipDbImpl.getCountryIso("2804:2c54:1111::"), "BR");
 		Assert.assertEquals(ipDbImpl.getCountryIso("2a00:1261:1111::"), "NL");
 		Assert.assertEquals(ipDbImpl.getCountryIso("2a00:1508:1111::"), "ES");
+		System.out.println(ObjectSizeCalculator.getObjectSize(ipDbImpl));
 	}
 }

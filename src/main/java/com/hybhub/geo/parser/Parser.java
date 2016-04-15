@@ -4,6 +4,8 @@ import java.math.BigInteger;
 import java.util.Scanner;
 import java.util.TreeMap;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.hybhub.geo.db.Ip;
 
 public class Parser {
@@ -21,11 +23,11 @@ public class Parser {
 		return this.scanner.hasNextLine();
 	}
 
-	private Ip next() {
+	private Pair<Boolean, Ip> next() {
 		String line = this.scanner.nextLine();
 		line = line.replaceAll("\"", "");
 		final String[] tokens = line.split(",");
-		return new Ip(tokens[0], tokens[1], tokens[2]);
+		return Pair.of(line.contains(":"), new Ip(tokens[0], tokens[2]));
 	}
 
 	public void parseAll() {
@@ -33,11 +35,11 @@ public class Parser {
 		ipv6Addr = new TreeMap<BigInteger, Ip>();
 
 		while (this.hasNext()) {
-			final Ip ipRange = this.next();
-			if (ipRange.isIpv6()) {
-				this.ipv6Addr.put(ipRange.getStart(), ipRange);
+			final Pair<Boolean, Ip> pair = this.next();
+			if (pair.getKey()) {
+				this.ipv6Addr.put(pair.getValue().getStart(), pair.getValue());
 			} else {
-				this.ipv4Addr.put(ipRange.getStart(), ipRange);
+				this.ipv4Addr.put(pair.getValue().getStart(), pair.getValue());
 			}
 		}
 	}
